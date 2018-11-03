@@ -236,3 +236,92 @@ function listImages(req, res, next) {
 ```
 * Update the **[`server/views/photos/index.ejs`](/server/views/photos/index.ejs)** to display the images
 
+----------------------------------------
+### Step06 - Upload Images
+- Creating a photo upload form **[`server/views/photos/upload.ejs`](/server/views/photos/upload.ejs)**
+- Update **[`server/views/templates/head.ejs`](/server/views/templates/head.ejs)** (Navigation)
+```html
+<a class="nav-link" href="/upload">Upload</a>
+```
+- Set the upload folder in `server/app.js`
+```js
+// Set the upload images directory
+app.set('photos', path.join(__dirname + '/public/images'));
+```
+- Add the following code to the **[`server/routes/photos.js`](/server/routes/photos.js)**
+```js
+...
+// Add the required modules
+var path = require('path');
+var fs = require('fs');
+var join = path.join;
+
+...
+
+// Function to get the upload form
+function getUploadForm(req, res, next) {
+  res.render('photos/upload', {
+    title: 'Photo upload form'
+  });
+};
+
+// Function to handle the upload
+function uploadImage(dir) {
+
+  // This is middleware so we have the middleware parameters
+  // The file are already parsed with the parseBody middleware
+  return function (req, res, next) {
+
+    var img = req.file, // Get the images - if any
+      name = img.originalname, // Get the image name
+      path = join(dir, img.originalname); // Set the path where to store the image = dir+imgName
+
+    // Use the fs module to create and save the file
+    fs.rename(
+      img.path, // Old path
+      path, // New path
+      function (err) { // callback
+
+        // Check to see if there wa any error while trying to move the image around
+        if (err) {
+          return next(err);
+        }
+
+        // Add the Photo to our DB 
+        Photos.create({
+            name: name,
+            path: name
+          },
+          function (err) {
+            // If there was an error while trying to add the image to the model
+            // "skip" to the next middleware
+            if (err) {
+              return next(err);
+            }
+            // Display the images gallery page
+            res.redirect('/');
+          });
+      });
+
+  };
+}
+
+...
+// Expose the public methods
+module.exports = {
+  listImages: listImages,
+  uploadImage: uploadImage,
+  getUploadForm: getUploadForm
+};
+```
+- Add the new routes (`get` & `post`) to `server/app.js`
+```js
+app.get('/upload', photos.getUploadForm);
+app.post('/upload', photos.uploadImage(app.get('photos')));
+```
+- Add the code in the `app.js` to "grab" the image. In this demo we will be using `multer`
+```js
+var multer = require('multer');
+...
+app.use(multer({dest: './uploads/'}).single('photo'));
+```

@@ -11,6 +11,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var LocalStrategy = require('passport-local').Strategy;
 var expressValidator = require('express-validator');
+var multer = require('multer');
 const SERVER_PORT = process.env.PORT || 3000;
 
 // Load routers
@@ -42,6 +43,9 @@ mongoose.connect('mongodb://127.0.0.1/node_tutorial', {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Setthe photos folder
+app.set('photos', path.join(__dirname + '/public/images'));
+
 // Add Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -49,6 +53,10 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
+
+app.use(multer({
+  dest: './uploads/'
+}).single('photo'));
 
 // Express Session Middleware
 app.use(session({
@@ -63,6 +71,10 @@ app.use(session({
 
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Set the upload route 
+app.get('/upload', photos.getUploadForm);
+app.post('/upload', photos.uploadImage(app.get('photos')));
 
 // Set the default route 
 app.use('/', photos.listImages);

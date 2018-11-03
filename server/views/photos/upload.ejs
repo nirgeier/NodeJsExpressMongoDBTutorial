@@ -1,0 +1,27 @@
+<% include ../templates/head %>
+
+<div class="row justify-content-center">
+    <form method="post" enctype="multipart/form-data" class="upload-form " action="/upload">
+        <div class="card">
+            <h5 class="card-header info-color text-white text-center py-3">
+                <%= title %>
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <input class="form-control" name="name" placeholder="image name" required="">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" name="photo" class="custom-file-input" id="inputGroupFile01"
+                            aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Upload image</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<% include ../templates/footer %>
