@@ -13,6 +13,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var expressValidator = require('express-validator');
 const SERVER_PORT = process.env.PORT || 3000;
 
+// Load routers
+var photos = require("./routes/photos");
+
 // Init The express app
 var app = express();
 
@@ -61,9 +64,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set the default route 
-app.use('/', function (req, res, next) {
-  res.send("<h1>Server is running.....</h1>");
-})
+app.use('/', photos.listImages);
 
 // The flash is a special area of the session used for storing messages. 
 // Flash was removed in Express 3.X 

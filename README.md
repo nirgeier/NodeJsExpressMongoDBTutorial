@@ -150,3 +150,39 @@ cd server
 nodemon app.js
 ```
 * Open your browser: http://localhost:3000 to verify that the server is running
+
+----------------------------------------
+### Step04 - Adding Routes And Views
+
+- Copy the ocntent of the public folder to the `server/public` folder.
+- Create **[`server/routes/photos.js`](/server/routes/photos.js)** and add a list function to list (display) the images
+```js
+  function listImages(req, res, next) {
+    // Render the images gallery
+    res.render('photos', {
+      title: 'Photos',
+      photos: []
+    });
+  }
+
+  // Expose the public methods
+  module.exports = {
+    listImages: listImages
+  }
+```
+- Create **[`server/views/photos/index.ejs`](/server/views/photos/index.ejs)** which will be served as our HTML page to display the images
+```html
+<h1>Photos application</h1>
+```
+- Edit **[`server/app.js`](/server/app.js)** and add the foloowing:
+  - photos router as required module
+  - default route should be mapped to `photos/listImages`
+```js
+...
+// Load routers
+var photos = require("./routes/photos");
+...
+// Set the default route 
+app.use('/', photos.listImages);
+...
+```
