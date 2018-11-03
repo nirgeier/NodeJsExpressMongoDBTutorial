@@ -76,6 +76,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/upload', photos.getUploadForm);
 app.post('/upload', photos.uploadImage(app.get('photos')));
 
+// Add the download middleware
+// The id is passed as parameter in the url
+app.get('/photo/:id/download', photos.downloadImage(app.get('photos')));
+
 // Set the default route 
 app.use('/', photos.listImages);
 

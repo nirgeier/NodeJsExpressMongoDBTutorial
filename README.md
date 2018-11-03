@@ -325,3 +325,44 @@ var multer = require('multer');
 ...
 app.use(multer({dest: './uploads/'}).single('photo'));
 ```
+----------------------------------------
+### Step07 - Download Images
+- Update the [`server/routes/photo.js`](/server/routes/photo.js) with the download method
+```js
+function downloadImage(dir) {
+
+    return function(req, res, next) {
+
+        // Get the image id from the url
+        var id = req.params.id;
+
+        // find the image in the DB
+        Photos.findById(id,
+            function(err, photo) {
+                if (err) {
+                    return next(err);
+                }
+                // get the image path
+                var path = join(dir, photo.path);
+
+                // Download the image name
+                res.download(path, photo.name + '.jpeg');
+            });
+    };
+};
+
+...
+// Expose the public methods
+module.exports = {
+  ...
+  downloadImage: downloadImage
+  
+};
+```
+- Add the new routes to `app.js`
+```js
+// Add the download middleware
+// The id is passed as parameter in the url
+app.get('/photo/:id/download', photos.download(app.get('photos')));
+```
+- Update the view to support the download method

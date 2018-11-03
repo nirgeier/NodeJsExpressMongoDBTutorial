@@ -92,9 +92,37 @@ function uploadImage(dir) {
   };
 }
 
+/**
+ *
+ * @param dir
+ * @returns {Function}
+ */
+function downloadImage(dir) {
+
+  return function (req, res, next) {
+
+    // Get the image id
+    var id = req.params.id;
+
+    // find the image in the DB
+    Photos.findById(id,
+      function (err, photo) {
+        if (err) {
+          return next(err);
+        }
+        // get the image path
+        var path = join(dir, photo.path);
+
+        // Download the image name
+        res.download(path, photo.name + '.jpeg');
+      });
+  };
+}
+
 // Expose the public methods
 module.exports = {
   listImages: listImages,
   uploadImage: uploadImage,
+  downloadImage: downloadImage,
   getUploadForm: getUploadForm
 };
