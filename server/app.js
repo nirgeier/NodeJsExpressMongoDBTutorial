@@ -13,6 +13,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var expressValidator = require('express-validator');
 var multer = require('multer');
 const SERVER_PORT = process.env.PORT || 3000;
+var logger = require('./logger');
+var morgan = require('morgan');
 
 // Load routers
 var photos = require("./routes/photos");
@@ -23,6 +25,11 @@ var app = express();
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Logger
+app.use(morgan('combined', {
+  stream: logger.stream
+}));
 
 // DB Init
 mongoose.connect('mongodb://127.0.0.1/node_tutorial', {

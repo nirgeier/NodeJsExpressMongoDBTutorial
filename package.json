@@ -16,5 +16,6 @@
   "bugs": {
     "url": "https://github.com/nirgeier/NodeJsExpressMongoDBTutorial/issues"
   },
-  "homepage": "https://github.com/nirgeier/NodeJsExpressMongoDBTutorial#readme"
+  "homepage": "https://github.com/nirgeier/NodeJsExpressMongoDBTutorial#readme",
+  "dependencies": {}
 }
