@@ -4,6 +4,8 @@
 
 .history
 data/*
+uploads/
+
 ### Node ###
 # Logs
 logs

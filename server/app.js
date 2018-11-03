@@ -47,6 +47,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
 app.use(cookieParser());
 
 // Express Session Middleware
@@ -65,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Set the default route 
 app.use('/', photos.listImages);
+
 
 // The flash is a special area of the session used for storing messages. 
 // Flash was removed in Express 3.X 

@@ -186,3 +186,53 @@ var photos = require("./routes/photos");
 app.use('/', photos.listImages);
 ...
 ```
+----------------------------------------
+### Step05 - Adding MongoDB
+- Make sure mongo is up and runnig.
+  - If you are using visual studio click on the `Azure Cosmos DB` icon and connect to the local DB
+    - Click on the `plug` icon
+    - Choose MongoDb from the drop down menu
+    - Type: `mongodb://127.0.0.1:27017`
+  - Now you should see the databases under your local instance  
+- Create [`server/models/Photos.js`](`/server/models/Photo.js`) with the photos model
+```js
+var mongoose = require('mongoose');
+
+// Define the Photos schema
+var schema = new mongoose.Schema({
+    name: String,
+    path: String
+});
+
+// Export the model
+var Model = mongoose.model('Photo', schema);
+
+module.exports = Model;
+```
+
+- Add the `models/Photos.js` to **[`server/views/photos/index.ejs`](/server/views/photos/index.ejs)**
+```js
+var Photos = require('../models/Photos');
+```
+- Update the `exports.listImages` to fetch the images from the mongod db
+```js
+function listImages(req, res, next) {
+  // Use the mongoose to find all the images in the model
+  Photos.find({}, // Find all images
+    function (err, photos) {
+
+      // Check for error
+      if (err) {
+        return next(err);
+      }
+
+      // Render the images gallery
+      res.render('photos', {
+        title: 'Photos',
+        photos: photos
+      });
+    });
+}
+```
+* Update the **[`server/views/photos/index.ejs`](/server/views/photos/index.ejs)** to display the images
+
