@@ -1,0 +1,59 @@
+<% include ../templates/head %>
+
+<% var errors = errors || {} %>
+
+<div class="row justify-content-center">
+  <form method="post" enctype="multipart/form-data" class="col-6" action="/account/register">
+    <div class="card login-form">
+      <h5 class="card-header info-color text-white text-center py-3">
+        <%= title %>
+      </h5>
+      <div class="card-body row">
+        <div class="form-group mb-3 col-12">
+          <label class="font-weight-bold">Username</label>
+          <input class="form-control bg-light text-primary" name="username" placeholder="User name" required="">
+          <% if (errors.username){ %>
+          <div class="alert alert-danger my-1 p-1 ">
+            <%= errors.username.msg %>
+          </div>
+          <%}%>
+        </div>
+        <div class="form-group mb-3 col-12">
+          <label class="font-weight-bold">Email</label>
+          <input class="form-control bg-light text-primary" name="email" placeholder="Email" required="">
+          <% if (errors && errors.email){ %>
+          <div class="alert alert-danger my-1 p-1 ">
+            <%= errors.email.msg %>
+          </div>
+          <%}%>
+        </div>
+        <div class="form-group mb-3 col-6">
+          <label class="font-weight-bold">Password</label>
+          <input type="password" class="form-control bg-light text-primary" name="password" placeholder="Password"
+            required="">
+          <% if (errors && errors.password){ %>
+          <div class="alert alert-danger my-1 p-1 ">
+            <%= errors.password.msg %>
+          </div>
+          <%}%>
+        </div>
+        <div class="form-group col-6">
+          <label class="font-weight-bold">Confirm Password</label>
+          <input type="password" class="form-control bg-light text-primary" name="password2" placeholder="Confirm Password"
+            required="">
+          <% if (errors && errors.password2){ %>
+          <div class="alert alert-danger my-1 p-1 ">
+            <%= errors.password2.msg %>
+          </div>
+          <%}%>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-success btn-block">Register</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<% include ../templates/footer %>

@@ -46,3 +46,7 @@ a {
 .card-header {
     margin: 1px;
 }
+
+.login-form {
+    max-height: fit-content;
+}

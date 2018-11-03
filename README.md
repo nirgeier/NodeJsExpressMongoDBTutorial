@@ -438,3 +438,41 @@ var morgan = require('morgan');
 app.use(morgan('combined', { stream: logger.stream }));
 
 ```
+----------------------------------------
+### Step09 - Adding Login/Register Routes & Views 
+
+- In this step we will add a login & register routes & views
+
+- Create the new account router: **[server/routes/account.js]**(server/routes/account.js)
+```js 
+var express = require('express');
+var router = express.Router();
+var logger = require('./../logger');
+
+// The router methods
+router.get('/login', getLoginForm);
+router.get('/register', getRegisterationForm);
+router.post('/login', login);
+router.post('/register', register);
+ 
+// --------------------------------
+// Copy the content of the file 
+// --------------------------------
+
+module.exports = router; 
+```
+
+- Copy the login & register templates
+  - [**server/views/account/register.ejs**](/server/views/account/register.ejs)
+  - [**server/views/account/login.ejs**](/server/views/account/login.ejs)
+
+- Add the new route to the `app.js`
+```js
+var account = require("./routes/account");
+
+... 
+// Handle the login/register.
+// The routes themself are in the router itself
+app.use('/account', account);
+```
+

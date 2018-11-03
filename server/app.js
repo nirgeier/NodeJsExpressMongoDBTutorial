@@ -18,6 +18,7 @@ var morgan = require('morgan');
 
 // Load routers
 var photos = require("./routes/photos");
+var account = require("./routes/account");
 
 // Init The express app
 var app = express();
@@ -61,6 +62,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
+// Add validation middleware
+app.use(expressValidator());
+
 app.use(multer({
   dest: './uploads/'
 }).single('photo'));
@@ -86,6 +90,9 @@ app.post('/upload', photos.uploadImage(app.get('photos')));
 // Add the download middleware
 // The id is passed as parameter in the url
 app.get('/photo/:id/download', photos.downloadImage(app.get('photos')));
+
+// Handle the login/register
+app.use('/account', account);
 
 // Set the default route 
 app.use('/', photos.listImages);

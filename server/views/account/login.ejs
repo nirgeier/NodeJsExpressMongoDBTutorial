@@ -1,0 +1,22 @@
+<% include ../templates/head %>
+
+
+<div class="row justify-content-center">
+  <form method="post" enctype="multipart/form-data" class="col-6" action="/account/login">
+    <div class="card login-form">
+      <h5 class="card-header info-color text-white text-center py-3">
+        <%= title %>
+      </h5>
+      <div class="card-body">
+        <label>Username</label>
+        <input class="form-control mb-3" name="username" placeholder="User name" required="">
+        <label>Password</label>
+        <input type="password" class="form-control mb-3" name="password" placeholder="Password" required="">
+        <button type="submit" class="btn btn-success btn-block">Login</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<% include ../templates/footer %>
