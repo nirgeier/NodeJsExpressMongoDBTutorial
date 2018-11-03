@@ -22,3 +22,36 @@
   - Windows: `mongod.bat` (Edit the file and set the path to your `mongod.exe`)
   - Unix based: `mongod.sh`
 
+----------------------------------------
+### Step 02 - Create Application Skelton
+
+* Install global Node packages which will be used in this tutorial
+```sh 
+  npm install -g grunt-cli express express-generator nodemon
+```
+* Create a NodeJS project 
+```sh
+  npm init -f 
+```
+* Create the server folder structure
+```sh
+  mkdir server
+  mkdir server/models
+  mkdir server/public
+  mkdir server/routes
+  mkdir server/views
+  touch server/app.js
+```
+
+* Create a server as a NodeJS project 
+```sh
+  cd server && npm init -f
+```
+
+* Install the following dependencies **inside the server folder** 
+
+```bash
+  npm i bcryptjs body-parser colors connect-flash cookie-parser debug ejs express express-messages
+  express-session express-validator mongodb mongoose multer passport passport-http passport-local winston
+```
+
