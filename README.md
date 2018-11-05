@@ -476,3 +476,5 @@ var account = require("./routes/account");
 app.use('/account', account);
 ```
 
+----------------------------------------
+### Step10 - Register User

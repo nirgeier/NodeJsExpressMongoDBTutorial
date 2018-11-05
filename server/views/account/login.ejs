@@ -2,6 +2,28 @@
 
 
 <div class="row justify-content-center">
+  <div class="col-12">
+    <% if (success_msg.length >0){ %>
+    <div class="alert alert-success">
+      `
+      <%= success_msg %>`
+    </div>
+    <% } %>
+
+    <% if (error_msg.length >0){ %>
+    <div class="alert alert-danger">
+      <%= error_msg %>
+    </div>
+    <% } %>
+
+    <% if (error.length >0){ %>
+    <div class="alert alert-danger">
+      <%= error %>
+    </div>
+    <% } %>
+  </div>
+</div>
+<div class="row justify-content-center">
   <form method="post" enctype="multipart/form-data" class="col-6" action="/account/login">
     <div class="card login-form">
       <h5 class="card-header info-color text-white text-center py-3">
@@ -17,6 +39,5 @@
     </div>
   </form>
 </div>
-
 
 <% include ../templates/footer %>

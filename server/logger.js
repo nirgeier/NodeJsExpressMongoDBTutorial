@@ -2,7 +2,6 @@ const appRoot = require('app-root-path');
 const winston = require('winston');
 const path = require('path');
 
-console.log(`${appRoot}`);
 // define the custom settings for each transport (file, console)
 var options = {
   debug: {

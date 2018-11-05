@@ -9,7 +9,6 @@ var flash = require('connect-flash');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-var LocalStrategy = require('passport-local').Strategy;
 var expressValidator = require('express-validator');
 var multer = require('multer');
 const SERVER_PORT = process.env.PORT || 3000;
@@ -51,6 +50,9 @@ mongoose.connect('mongodb://127.0.0.1/node_tutorial', {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Setthe photos folder
 app.set('photos', path.join(__dirname + '/public/images'));
 
@@ -80,8 +82,19 @@ app.use(session({
 
 }));
 
-// Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
+// The flash is a special area of the session used for storing messages. 
+// Flash was removed in Express 3.X 
+// Messages are written to the flash and cleared after being displayed to the user
+app.use(flash());
+
+// Collect Global Vars
+app.use(function (req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
+  next();
+});
 
 // Set the upload route 
 app.get('/upload', photos.getUploadForm);
@@ -96,21 +109,6 @@ app.use('/account', account);
 
 // Set the default route 
 app.use('/', photos.listImages);
-
-
-// The flash is a special area of the session used for storing messages. 
-// Flash was removed in Express 3.X 
-// Messages are written to the flash and cleared after being displayed to the user
-app.use(flash());
-
-// Collect Global Vars
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  res.locals.user = req.user || null;
-  next();
-});
 
 // Set Port
 app.set('port', SERVER_PORT);

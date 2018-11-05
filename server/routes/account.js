@@ -1,11 +1,23 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/Users');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 router.get('/register', getRegisterationForm);
 router.post('/register', register);
 
 router.get('/login', getLoginForm);
-router.post('/login', login);
+router.post('/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    //    failureFlash: 'Invalid username or password.'
+    failureFlash: true
+  }),
+  function (req, res, next) {
+    console.log(arguments);
+  });
 
 /**
  * The function is a middleware
@@ -33,7 +45,8 @@ function getLoginForm(req, res, next) {
 function getRegisterationForm(req, res, next) {
   // Render the images gallery
   res.render('account/register', {
-    title: "Registration Form"
+    title: "Registration Form",
+    data: {}
   });
 }
 
@@ -45,9 +58,7 @@ function getRegisterationForm(req, res, next) {
  * @param next
  * 
  */
-function login(req, res, next) {
-
-}
+function login(req, res, next) {}
 
 /**
  * The function is a middleware
@@ -73,14 +84,15 @@ function register(req, res, next) {
   validateForm({
     req: req,
     res: res,
+    action: "register",
     title: "Registration Form",
     view: "account/register"
   });
 
-
 }
 
 function validateForm(data) {
+  console.log('validateForm');
   let errors,
     errorMessages;
 
@@ -98,10 +110,11 @@ function validateForm(data) {
   if (errorMessages) {
     data.res.render(data.view || "/", {
       title: data.title || "",
-      errors: errorMessages
+      errors: errorMessages,
+      data: data.req.body
     });
   } else {
-    data.res.redirect('/');
+    processAction(data);
   }
 
   // Return undefined if there are no errors
@@ -109,4 +122,67 @@ function validateForm(data) {
 
 }
 
+function processAction(data) {
+
+  switch (data.action) {
+    case "login":
+      console.log('login');
+      break;
+    case "register":
+      let user = new User(data.req.body);
+      User.createUser(user)
+        .then(function (err, userRecord) {
+          if (!err) {
+            data.res.redirect('/');
+          }
+        });
+      break;
+  }
+
+}
+
+// serializeUser
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+// de-serializeUser
+passport.serializeUser(function (id, done) {
+  User.findById(id, done);
+});
+
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    console.log('LocalStrategy');
+    User.findOne({
+      username: username
+    }, function (err, user) {
+
+      if (err) {
+        return done(err);
+      }
+
+      if (!user) {
+        return done(null, false, {
+          message: 'Incorrect username.'
+        });
+      }
+
+      User.comparePasswords(password, user.password,
+        function (err, isMatch) {
+          console.log('User found, isMatch:', isMatch);
+          if (err)
+            throw err;
+          if (isMatch) {
+            return done(null, user);
+          } else {
+            return done(null, false, {
+              message: "Wrong password"
+            });
+          }
+
+        }); //  User.comparePasswords
+    });
+  }
+));
 module.exports = router;

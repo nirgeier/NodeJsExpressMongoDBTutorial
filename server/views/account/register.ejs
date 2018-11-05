@@ -11,7 +11,7 @@
       <div class="card-body row">
         <div class="form-group mb-3 col-12">
           <label class="font-weight-bold">Username</label>
-          <input class="form-control bg-light text-primary" name="username" placeholder="User name" required="">
+          <input class="form-control bg-light text-primary" name="username" placeholder="User name" required="" value="<%= data.username %>">
           <% if (errors.username){ %>
           <div class="alert alert-danger my-1 p-1 ">
             <%= errors.username.msg %>
@@ -20,7 +20,7 @@
         </div>
         <div class="form-group mb-3 col-12">
           <label class="font-weight-bold">Email</label>
-          <input class="form-control bg-light text-primary" name="email" placeholder="Email" required="">
+          <input class="form-control bg-light text-primary" name="email" placeholder="Email" required="" value="<%= data.email %>">
           <% if (errors && errors.email){ %>
           <div class="alert alert-danger my-1 p-1 ">
             <%= errors.email.msg %>
@@ -30,7 +30,7 @@
         <div class="form-group mb-3 col-6">
           <label class="font-weight-bold">Password</label>
           <input type="password" class="form-control bg-light text-primary" name="password" placeholder="Password"
-            required="">
+            value="<%= data.password %>" required="">
           <% if (errors && errors.password){ %>
           <div class="alert alert-danger my-1 p-1 ">
             <%= errors.password.msg %>
@@ -40,7 +40,7 @@
         <div class="form-group col-6">
           <label class="font-weight-bold">Confirm Password</label>
           <input type="password" class="form-control bg-light text-primary" name="password2" placeholder="Confirm Password"
-            required="">
+            value="<%= data.password2 %>" required="">
           <% if (errors && errors.password2){ %>
           <div class="alert alert-danger my-1 p-1 ">
             <%= errors.password2.msg %>
