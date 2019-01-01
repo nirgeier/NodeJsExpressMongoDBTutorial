@@ -31,7 +31,7 @@
 ```
 * Create a NodeJS project 
 ```sh
-  npm init -f 
+  npm init -y 
 ```
 * Create the server folder structure
 ```sh
@@ -45,7 +45,7 @@
 
 * Create a server as a NodeJS project 
 ```sh
-  cd server && npm init -f
+  cd server && npm init -y
 ```
 
 * Install the following dependencies **inside the server folder** 
