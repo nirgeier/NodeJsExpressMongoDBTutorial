@@ -154,7 +154,7 @@ nodemon app.js
 ----------------------------------------
 ### Step04 - Adding Routes And Views
 
-- Copy the ocntent of the public folder to the `server/public` folder.
+- Copy the content of the public folder to the `server/public` folder.
 - Create **[`server/routes/photos.js`](/server/routes/photos.js)** and add a list function to list (display) the images
 ```js
   function listImages(req, res, next) {
